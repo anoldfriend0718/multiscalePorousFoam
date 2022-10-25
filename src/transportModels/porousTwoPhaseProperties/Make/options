@@ -1,0 +1,11 @@
+EXE_INC = \
+    -I$(LIB_SRC)/transportModels/twoPhaseMixture/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(WM_PROJECT_USER_DIR)/src/transportModels/porousInterfaceProperties/lnInclude
+    
+
+LIB_LIBS = \
+    -ltwoPhaseMixture \
+    -lfiniteVolume \
+    -L$(FOAM_USER_LIBBIN) \
+    -limpPorousInterfaceProperties

@@ -1,0 +1,70 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  plus                                  |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      setFieldsDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+defaultFieldValues
+(
+    volScalarFieldValue alpha.wetting 1
+    volScalarFieldValue eps 1
+);
+
+regions
+(
+    boxToCell  // 1 - 9mm
+    {
+        box (0 8.7e-3 0) (1e-3 1 1);
+        fieldValues
+        (
+            volScalarFieldValue alpha.wetting 0
+        );
+    }
+
+    cylinderToCell //2 - cycle R 0.71 (a=1 mm, theta=45 deg)
+    {
+        p1 (0.5e-3 8.7e-3 -1);
+        p2 (0.5e-3 8.7e-3 1);
+        radius 0.71e-3;
+        fieldValues
+        (
+            volScalarFieldValue alpha.wetting 0
+        );
+    }
+
+    boxToCell  // 3  left solid
+    {
+        box (-0.5e-3 0 0) (0 1 1);
+        fieldValues
+        (
+            volScalarFieldValue eps 0.01
+            volScalarFieldValue alpha.wetting 1
+        );
+    }
+
+    boxToCell  // 4 - right solid
+    {
+        box (1e-3 0 0) (1.5e-3 1 1);
+        fieldValues
+        (
+            volScalarFieldValue eps 0.01
+            volScalarFieldValue alpha.wetting 1
+        );
+    }
+
+);
+
+
+// ************************************************************************* //
+

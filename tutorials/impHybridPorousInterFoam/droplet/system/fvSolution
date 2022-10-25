@@ -1,0 +1,104 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.1                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    "alpha.wetting.*"
+    {
+        nAlphaCorr      2;
+        nAlphaSubCycles 1; 
+        cAlpha          1;
+        maxUnboundedness  0.001;
+
+        cSK          0;
+        nSK          0;
+        cPc          0;
+        nSC          0;
+        KCorr        0;
+
+        porousBoundaryNormSmoothingCycles            1;
+        porousBoundaryNormSmoothingMethod            1;
+        alphaInPorousRegion              1;
+        hybridNlgCoeff                   0.6;
+        alphaThresholdK             1.0e-4;
+        alphaThresholdFc            1.0e-2;
+
+        MULESCorr       yes;
+        nLimiterIter    3;
+
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-8；
+        relTol          0;
+    }
+
+    p
+    {
+        solver          PCG; //PCG; //GAMG;
+        preconditioner  DIC;
+        tolerance       1e-8;
+        relTol          0.05;
+        maxIter          500;
+	    smoother        GaussSeidel;
+    }
+
+    pFinal
+    {
+        $p;
+        relTol          0;
+    }
+
+    U
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-12;
+        relTol          0.01;
+    }
+
+    UFinal
+    {
+        $U;
+        relTol          0;
+    }
+}
+
+
+PIMPLE
+{
+    momentumPredictor   no;
+    nOuterCorrectors    1;
+    nCorrectors         2;
+    nNonOrthogonalCorrectors 0;
+
+    pRefCell    0;
+    pRefValue    0;
+    pcRefCell    0;
+    pcRefValue    0;
+}
+
+
+relaxationFactors
+{
+    equations
+    {
+        ".*" 1;
+    }
+}
+
+
+// ************************************************************************* //

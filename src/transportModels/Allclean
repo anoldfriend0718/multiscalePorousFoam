@@ -1,0 +1,11 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # run from this directory
+set -x
+
+# Compiling solvers 
+
+wclean libso ./porousInterfaceProperties/
+wclean libso ./porousTwoPhaseProperties/
+wclean libso ./porousImmiscibleIncompressibleTwoPhaseMixture/
+wclean all ./porousModels
+# wmake all solvers/hybridPorousInterFoam_ssf3

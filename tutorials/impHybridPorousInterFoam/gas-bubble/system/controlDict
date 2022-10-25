@@ -1,0 +1,99 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  plus                                  |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     impHybridPorousInterFoam;
+
+startFrom       latestTime; 
+startTime       0.0;
+
+stopAt          endTime;  
+
+endTime         0.005;
+
+deltaT          1e-9; 
+
+writeControl    adjustableRunTime; 
+
+writeInterval   1e-3;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression uncompressed;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable yes;
+
+adjustTimeStep  yes;
+
+maxCo           0.1;
+maxAlphaCo      0.1;
+maxDeltaT       1.6e-8; 
+
+
+// define functionObject
+
+functions
+{
+    AverageWeighted_alpha
+    {
+        type            volFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+        writeControl    writeTime;
+        operation       weightedVolAverage;
+        writeFields     false;
+        fields
+        (
+            alpha.wetting
+        );
+        weightField     eps;
+    }
+
+    Average_eps
+    {
+        type            volFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+        writeControl    writeTime;
+        operation       volAverage;
+        writeFields     false;
+        fields
+        (
+            eps
+        );
+    }
+
+    Max_U
+    {
+        type            volFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+        writeControl    writeTime;
+        operation       max;
+        writeFields     false;
+        fields
+        (
+            U
+        );
+    }
+}
+
+// ************************************************************************* //
